@@ -51,9 +51,9 @@ static void setSovable(Pool * pool, Solvable *solvable, std::string name,
     //   Name: $name:$stream:$version:$context
     //   Version: 0
     //   Arch: $arch
-    ss << name << ":" << stream << ":" << version << ":" << context;
+    ss << name << ":" << stream << ":" << context;
     solvable_set_str(solvable, SOLVABLE_NAME, ss.str().c_str());
-    solvable_set_str(solvable, SOLVABLE_EVR, "0");
+    solvable_set_str(solvable, SOLVABLE_EVR, version.c_str());
     // TODO Test can be remove when modules will be always with arch
     solvable_set_str(solvable, SOLVABLE_ARCH, arch ? arch : "noarch");
     // create Provide: module($name)
@@ -65,12 +65,6 @@ static void setSovable(Pool * pool, Solvable *solvable, std::string name,
     // create Provide: module($name:$stream)
     ss.str(std::string());
     ss << "module(" << name << ":" << stream << ")";
-    depId = pool_str2id(pool, ss.str().c_str(), 1);
-    solvable_add_deparray(solvable, SOLVABLE_PROVIDES, depId, -1);
-
-    // create Provide: module($name:$stream:$version)
-    ss.str(std::string());
-    ss << "module(" << name << ":" << stream << ":" << version << ")";
     depId = pool_str2id(pool, ss.str().c_str(), 1);
     solvable_add_deparray(solvable, SOLVABLE_PROVIDES, depId, -1);
 }
