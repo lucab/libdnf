@@ -194,6 +194,16 @@ std::string ModulePackage::getYaml() const
 }
 
 /**
+ * @brief Return module MD document version.
+ *
+ * @return uint64_t
+ */
+uint64_t ModulePackage::getMdDocumentVersion() const
+{
+    return modulemd_module_stream_get_mdversion(mdStream);
+}
+
+/**
  * @brief Return module $name.
  *
  * @return const char *

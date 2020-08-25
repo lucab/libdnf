@@ -74,6 +74,7 @@ public:
 
     Id getId() const { return id; };
     std::string getYaml() const;
+    uint64_t getMdDocumentVersion() const;
 
 private:
     friend struct ModulePackageContainer;
