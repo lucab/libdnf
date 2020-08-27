@@ -75,6 +75,13 @@ public:
     Id getId() const { return id; };
     std::string getYaml() const;
     uint64_t getMdDocumentVersion() const;
+    /**
+     * @brief Returns strings of modules requires ("nodejs", "nodejs:12", "nodejs:-11")
+     *
+     * @param removePlatform When true, the method will not return requires with stream "platform" (default false)
+     * @return std::vector< std::string >
+     */
+    std::vector<std::string> getRequires(bool removePlatform=false);
 
 private:
     friend struct ModulePackageContainer;
@@ -92,6 +99,8 @@ private:
         const std::vector<std::string> & osReleasePaths, const std::string install_root,
         const char *  platformModule);
     void createDependencies(Solvable *solvable) const;
+    /// return vector with string requires like "nodejs:11", "nodejs", or "nodejs:-11"
+    static std::vector<std::string> getRequires(ModulemdModuleStream * mdStream, bool removePlatform);
 
     ModulemdModuleStream * mdStream;
 
@@ -104,6 +113,11 @@ private:
 inline bool ModulePackage::operator==(const ModulePackage &r) const
 {
     return id == r.id && moduleSack == r.moduleSack;
+}
+
+inline std::vector<std::string> ModulePackage::getRequires(bool removePlatform)
+{
+    return getRequires(mdStream, removePlatform);
 }
 
 }
