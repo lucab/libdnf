@@ -89,6 +89,8 @@ private:
 
     ModulePackage(DnfSack * moduleSack, LibsolvRepo * repo,
         ModulemdModuleStream * mdStream, const std::string & repoID);
+    ModulePackage(DnfSack * moduleSack, LibsolvRepo * repo,
+        ModulemdModuleStream * mdStream, const std::string & repoID, const std::string & context);
 
     ModulePackage(const ModulePackage & mpkg);
     ModulePackage & operator=(const ModulePackage & mpkg);
@@ -110,6 +112,13 @@ private:
     std::string repoID;
     Id id;
 };
+
+inline ModulePackage::ModulePackage(DnfSack * moduleSack, LibsolvRepo * repo,
+        ModulemdModuleStream * mdStream, const std::string & repoID)
+{
+    std::string context;
+    ModulePackage(moduleSack, repo, mdStream, repoID, context);
+}
 
 inline bool ModulePackage::operator==(const ModulePackage &r) const
 {

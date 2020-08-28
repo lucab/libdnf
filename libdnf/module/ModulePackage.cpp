@@ -43,8 +43,8 @@ extern "C" {
 
 namespace libdnf {
 
-static void setSovable(Pool * pool, Solvable *solvable, std::string name,
-    std::string stream, std::string version, std::string context, const char * arch)
+static void setSovable(Pool * pool, Solvable *solvable, const std::string & name,
+    const std::string & stream, const std::string & version, const std::string & context, const char * arch)
 {
     std::ostringstream ss;
     // create solvable with:
@@ -80,7 +80,7 @@ static std::pair<std::string, std::string> parsePlatform(const std::string & pla
 }
 
 ModulePackage::ModulePackage(DnfSack * moduleSack, LibsolvRepo * repo,
-    ModulemdModuleStream * mdStream, const std::string & repoID)
+    ModulemdModuleStream * mdStream, const std::string & repoID, const std::string & context)
         : mdStream(mdStream)
         , moduleSack(moduleSack)
         , repoID(repoID)
@@ -92,7 +92,7 @@ ModulePackage::ModulePackage(DnfSack * moduleSack, LibsolvRepo * repo,
     id = repo_add_solvable(repo);
     Solvable *solvable = pool_id2solvable(pool, id);
 
-    setSovable(pool, solvable, getName(), getStream(), getVersion(), getContext(), getArchCStr());
+    setSovable(pool, solvable, getName(), getStream(), getVersion(), context.empty() ? getContext() : context, getArchCStr());
     createDependencies(solvable);
     HyRepo hyRepo = static_cast<HyRepo>(repo->appdata);
     libdnf::repoGetImpl(hyRepo)->needs_internalizing = 1;
