@@ -23,6 +23,7 @@ along with dnfdaemon-server.  If not, see <https://www.gnu.org/licenses/>.
 #include "services/base/base.hpp"
 #include "services/repo/repo.hpp"
 #include "services/repoconf/repo_conf.hpp"
+#include "services/rpm/rpm.hpp"
 #include "utils.hpp"
 
 #include <libdnf/logger/logger.hpp>
@@ -114,6 +115,7 @@ Session::Session(sdbus::IConnection & connection, dnfdaemon::KeyValueMap session
     services.emplace_back(std::make_unique<Base>(*this));
     services.emplace_back(std::make_unique<RepoConf>(*this));
     services.emplace_back(std::make_unique<Repo>(*this));
+    services.emplace_back(std::make_unique<Rpm>(*this));
 
     // Register all provided services on d-bus
     for (auto & s : services) {
